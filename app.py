@@ -84,11 +84,12 @@ def register():
     else:
         name = request.form['name']
         email = request.form['email']
+        role = request.form['role']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (name, email, password, role, status) VALUES (%s,%s,%s, %s,0)",
-                    (name, email, hash_password, 'user'))
+                    (name, email, hash_password, role))
         mysql.connection.commit()
         flash("registrasi anda berhasil!   Silahkan Login...")
         return redirect(url_for('login'))
@@ -237,6 +238,17 @@ def admin():
         return json.dumps(rv)
     else:
         return render_template("admin.html", users=rv)
+
+@app.route('/delete-user/<string:id_data>')
+def hapusUser(id_data):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM users WHERE id=%s" ,(id_data,))
+    mysql.connection.commit()
+    isMobile = request.args.get('mobile')
+    if isMobile == "true":
+        return "success"
+    else:
+        return render_template("admin.html")
 
 @app.route('/about-us')
 def AboutUs():

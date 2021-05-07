@@ -28,24 +28,8 @@
           <td>
             <a href="#!" class="btn btn-warning btn-xs" data-toggle="modal"
               data-target="#modalEdit{{ row.Id }}">Edit</a>
-          </td>
-          <td>
-            <!-- <div id="modalEdit{{ row.0 }}" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                    <h4 class="modal-title">Edit Users</h4>
-                  </div>
-
-
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div> -->
+            <a href="/delete-user/{{ row.Id }}" class="btn btn-danger btn-xs"
+              onclick="return confirm('Yakin ingin hapus?')">Hapus</a>
           </td>
           <!-- Modal -->
 
@@ -68,8 +52,17 @@
                       <input type="text" class="form-control" name="nama" value="{{ row.name }}" />
                       <label>Email:</label>
                       <input type="email" class="form-control" name="email" value="{{ row.email }}" />
-                      <label>Role:</label>
-                      <input type="text" class="form-control" name="role" value="{{ row.role }}" />
+                      <br>
+                      <label for="Select" class="form-label">Jabatan :</label>
+                      <select id="Select" class="form-select text-left" name="role">
+                        <option value="admin">admin</option>
+                        <option value="manajer">manajer</option>
+                        <option value="user">user</option>
+                      </select>
+                      <br>
+                      <br>
+                      <!-- <label>Role:</label> -->
+                      <!-- <input type="text" class="form-control" name="role" value="{{ row.role }}" /> -->
                       <label>Status:</label>
                       <input type="text" class="form-control" name="status" value="{{ row.status }}" />
                     </div>

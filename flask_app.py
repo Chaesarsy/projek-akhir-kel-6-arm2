@@ -13,6 +13,7 @@ app.config['MYSQL_HOST'] = 'http://chaesarsy0403.pythonanywhere.com'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'chaesar123'
 app.config['MYSQL_DB'] = 'db_monitoring'
+app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
