@@ -34,8 +34,12 @@ def login():
             if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
                 print(user['status'])
                 if user['status'] == 0:
-                    flash("user not activated!")
-                    return redirect(url_for('login'))
+                    isMobile = request.args.get('mobile')
+                    if isMobile == "true":
+                        return "Error: user not active"
+                    else:
+                        flash("user not activated!")
+                        return redirect(url_for('login'))
                 else:
                     if user['role'] == 'admin' :
                         session['role'] = user['role']
@@ -57,7 +61,7 @@ def login():
             else:
                 isMobile = request.args.get('mobile')
                 if isMobile == "true":
-                    return "json.dumps({'email': user['email'], 'role': user['role']})"
+                    return "Error: password and email not match"
                 else:
                     flash("Error: password and email not match")
                     return redirect(url_for('login'))
@@ -65,7 +69,7 @@ def login():
         else:
             isMobile = request.args.get('mobile')
             if isMobile == "true":
-                return "json.dumps({'email': user['email'], 'role': user['role']})"
+                return "Error: user not found"
             else:
                 flash("Error: user not found")
                 return redirect(url_for('login'))
