@@ -206,13 +206,13 @@ def updateUser():
 def admin():
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     curl.execute("SELECT * FROM users")
-    users = curl.fetchall()
+    fv = curl.fetchall()
     curl.close()
     isMobile = request.args.get('mobile')
     if isMobile == "true":
-        return json.dumps(users)
+        return json.dumps(fv)
     else:
-        return render_template("admin.html", users=users)
+        return render_template("admin.html", users=fv)
 
 @app.route('/about-us')
 def AboutUs():
