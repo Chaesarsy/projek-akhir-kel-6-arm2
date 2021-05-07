@@ -99,24 +99,41 @@ def ban():
     cur.execute("SELECT * FROM ban")
     rv = cur.fetchall()
     cur.close()
-    return render_template('ban.html', bans=rv)
+    isMobile = request.args.get('mobile')
+    if isMobile == "true":
+        return json.dumps(rv)
+    else:
+        return render_template('ban.html', bans=rv)
 
 
 @app.route('/insert-ban', methods=["POST"])
-def insertBan():
+def insertBanWeb():
     startDate = request.form['startDate']
     endDate = request.form['endDate']
     start = datetime.datetime.strptime(startDate, "%m/%d/%Y %I:%M %p")
     end = datetime.datetime.strptime(endDate, "%m/%d/%Y %I:%M %p")
     deltaTgl = end - start
+    insertBan(deltaTgl.days + 1, start, end)
+    return redirect(url_for('ban'))
 
+@app.route('/insert-ban-mobile', methods=["POST"])
+def insertBanMobile():
+    startDate = request.form['startDate']
+    endDate = request.form['endDate']
+    start = datetime.datetime.strptime(startDate, "%d/%m/%Y")
+    end = datetime.datetime.strptime(endDate, "%d/%m/%Y")
+    deltaTgl = end - start
+    insertBan(deltaTgl.days + 1, start, end)
+    return "success"
+
+def insertBan(iterations, start, end):
     cur = mysql.connection.cursor()
 
     Delete_all_rows = """truncate table ban """
     cur.execute(Delete_all_rows)
     mysql.connection.commit()
 
-    for x in range(deltaTgl.days + 1):
+    for x in range(iterations):
         target = random.randint(1, 6)
         aktual = random.randint(1, 10)
         status = ''
@@ -130,15 +147,10 @@ def insertBan():
 
         date = start + datetime.timedelta(days=x)
         tanggal = date.strftime("%d/%m/%Y")
-        
+
         cur.execute("INSERT INTO ban (tanggal, target, aktual, status) VALUES (%s, %s, %s, %s)", (tanggal, target, aktual, status))
         mysql.connection.commit()
-
-    isMobile = request.args.get('mobile')
-    if isMobile == "true":
-        return "success"
-    else:
-        return redirect(url_for('ban'))
+    return "success"
 
 @app.route('/velg')
 def velg():
@@ -146,23 +158,40 @@ def velg():
     cur.execute("SELECT * FROM velg")
     rv = cur.fetchall()
     cur.close()
-    return render_template('velg.html', velgs=rv)
+    isMobile = request.args.get('mobile')
+    if isMobile == "true":
+        return json.dumps(rv)
+    else:
+        return render_template('velg.html', velgs=rv)
 
 @app.route('/insert-velg', methods=["POST"])
-def insertVelg():
+def insertVelgWeb():
     startDate = request.form['startDate']
     endDate = request.form['endDate']
     start = datetime.datetime.strptime(startDate, "%m/%d/%Y %I:%M %p")
     end = datetime.datetime.strptime(endDate, "%m/%d/%Y %I:%M %p")
     deltaTgl = end - start
+    insertVelg(deltaTgl.days + 1, start, end)
+    return redirect(url_for('velg'))
 
+@app.route('/insert-velg-mobile', methods=["POST"])
+def insertVelgMobile():
+    startDate = request.form['startDate']
+    endDate = request.form['endDate']
+    start = datetime.datetime.strptime(startDate, "%d/%m/%Y")
+    end = datetime.datetime.strptime(endDate, "%d/%m/%Y")
+    deltaTgl = end - start
+    insertVelg(deltaTgl.days + 1, start, end)
+    return "success"
+
+def insertVelg(iterations, start, end):
     cur = mysql.connection.cursor()
 
     Delete_all_rows = """truncate table velg """
     cur.execute(Delete_all_rows)
     mysql.connection.commit()
 
-    for x in range(deltaTgl.days + 1):
+    for x in range(iterations):
         target = random.randint(1, 6)
         aktual = random.randint(1, 10)
         status = ''
@@ -179,12 +208,7 @@ def insertVelg():
 
         cur.execute("INSERT INTO velg (tanggal, target, aktual, status) VALUES (%s, %s, %s, %s)", (tanggal, target, aktual, status))
         mysql.connection.commit()
-
-    isMobile = request.args.get('mobile')
-    if isMobile == "true":
-        return "success"
-    else:
-        return redirect(url_for('velg'))
+    return "success"
 
 @app.route('/update-user', methods=["POST"])
 def updateUser():
@@ -206,13 +230,13 @@ def updateUser():
 def admin():
     curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     curl.execute("SELECT * FROM users")
-    fv = curl.fetchall()
+    rv = curl.fetchall()
     curl.close()
     isMobile = request.args.get('mobile')
     if isMobile == "true":
-        return json.dumps(fv)
+        return json.dumps(rv)
     else:
-        return render_template("admin.html", users=fv)
+        return render_template("admin.html", users=rv)
 
 @app.route('/about-us')
 def AboutUs():
