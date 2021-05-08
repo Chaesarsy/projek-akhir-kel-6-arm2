@@ -262,7 +262,7 @@ def hapusUser(id_data):
     if isMobile == "true":
         return "success"
     else:
-        return render_template("admin.html")
+        return redirect(url_for('admin'))
 
 @app.route('/about-us')
 def AboutUs():
