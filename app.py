@@ -7,11 +7,20 @@ import bcrypt
 import json
 import datetime
 
+# app = Flask(__name__)
+# app.config['MYSQL_HOST'] = '127.0.0.1'
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = ''
+# app.config['MYSQL_DB'] = 'db_monitoring'
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+# mysql = MySQL(app)
+
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = '127.0.0.1'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'db_monitoring'
+app.config['MYSQL_HOST'] = 'chaesarsy0403.mysql.pythonanywhere-services.com'
+app.config['MYSQL_USER'] = 'chaesarsy0403'
+app.config['MYSQL_PASSWORD'] = 'chaesar123'
+app.config['MYSQL_DB'] = 'chaesarsy0403$db_monitoring'
+app.config['MYSQL_PORT'] = 3306
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
