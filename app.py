@@ -16,6 +16,7 @@ import datetime
 # mysql = MySQL(app)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "^A%DJAJU^JJ123"
 app.config['MYSQL_HOST'] = 'chaesarsy0403.mysql.pythonanywhere-services.com'
 app.config['MYSQL_USER'] = 'chaesarsy0403'
 app.config['MYSQL_PASSWORD'] = 'chaesar123'
@@ -40,7 +41,7 @@ def login():
         curl.close()
 
         if len(user) > 0:
-            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
+            if bcrypt.hashpw(password, user["password"].encode('utf-8')) == user["password"]:
                 print(user['status'])
                 if user['status'] == 0:
                     isMobile = request.args.get('mobile')
@@ -271,6 +272,6 @@ def AboutUs():
     else:
         return render_template("about-us.html")
 
-if __name__ == '__main__':
-    app.secret_key = "^A%DJAJU^JJ123"
-    app.run(host="0.0.0.0", port=5000, debug=True)
+# if __name__ == '__main__':
+#     app.secret_key = "^A%DJAJU^JJ123"
+#     app.run(host="0.0.0.0", port=5000, debug=True)
